@@ -1,4 +1,4 @@
-package Repository_pack;
+package Exception_pack;
 
 public class MenuItemNotAvailable extends RuntimeException {
     public MenuItemNotAvailable(String msg) {
