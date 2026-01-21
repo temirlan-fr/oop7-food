@@ -1,4 +1,4 @@
-package Exception_pack;
+package Repository_pack;
 
 public class InvalidQuantity extends RuntimeException {
     public InvalidQuantity (String msg) {
