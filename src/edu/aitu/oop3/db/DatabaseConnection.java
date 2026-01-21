@@ -1,4 +1,4 @@
-package Repository_pack;
+package edu.aitu.oop3.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;
