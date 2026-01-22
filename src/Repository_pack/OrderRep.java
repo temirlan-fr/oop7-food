@@ -25,8 +25,7 @@ public class OrderRep {
 
     public void markCompleted(int orderId) {
         try (Connection con = DatabaseConnection.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "UPDATE orders SET status='COMPLETED' WHERE id=?");
+            PreparedStatement ps = con.prepareStatement("UPDATE orders SET status='COMPLETED' WHERE id=?");
             ps.setInt(1, orderId);
 
             int updated = ps.executeUpdate();
