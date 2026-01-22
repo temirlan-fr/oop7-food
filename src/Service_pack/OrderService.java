@@ -8,7 +8,8 @@ import Repository_pack.OrderRep;
 public class OrderService {
 
     private final OrderRep orderRepo = new OrderRep();
-    private final OrderItemRep itemRepo = new OrderItemRep();
+    private final OrderItemRep itemRepo = new
+            OrderItemRep();
     private final MenuService menuService = new MenuService();
 
     public int placeOrder(int customerId, int menuItemId, int quantity) {
@@ -17,7 +18,8 @@ public class OrderService {
             throw new InvalidQuantity("Quantity must be greater than 0");
         }
 
-        MenuItem item = menuService.getAvailableMenuItem(menuItemId);
+        MenuItem item =
+                menuService.getAvailableMenuItem(menuItemId);
 
         int orderId = orderRepo.createOrder(customerId);
         itemRepo.addItem(orderId, item.getId(), quantity);
