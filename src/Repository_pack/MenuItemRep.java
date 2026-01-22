@@ -11,7 +11,7 @@ public class MenuItemRep {
         try (Connection con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "SELECT * FROM menu_items WHERE id = ?");
-            ps.setInt(1, id);
+            ps.setInt(1, id)
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
