@@ -1,7 +1,9 @@
 package Repository_pack;
 
 import Entity_pack.MenuItem;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class MenuItemRep {
 
