@@ -5,11 +5,9 @@ public class Main {
 
         OrderService orderService = new OrderService();
 
-        // Заказ беру
         int orderId = orderService.placeOrder(1, 1, 2);
         System.out.println("Order created with ID: " + orderId);
 
-        // Заказ толықтау
         orderService.completeOrder(orderId);
         System.out.println("Order completed");
     }
