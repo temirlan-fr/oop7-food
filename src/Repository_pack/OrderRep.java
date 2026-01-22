@@ -23,7 +23,7 @@ public class OrderRep {
         }
     }
 
-    public void markCompleted(int orderId) {
+    public boolean markCompleted(int orderId) {
         try (Connection con = DatabaseConnection.getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE orders SET status='COMPLETED' WHERE id=?");
             ps.setInt(1, orderId);
@@ -36,5 +36,6 @@ public class OrderRep {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 }
