@@ -29,7 +29,7 @@ public class Main {
             psCustomer.setInt(1, customerId);
             ResultSet rsCustomer = psCustomer.executeQuery();
             if (rsCustomer.next()) {
-                System.out.println("Customer: " + rsCustomer.getString("name"));
+                System.out.println("Customer: " + rsCustomer.getString("name"))
             }
 
             List<OrderItem> items = orderService.getOrderItems(orderId);
