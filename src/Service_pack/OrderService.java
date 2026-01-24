@@ -44,7 +44,7 @@ public class OrderService {
     return total;
     }
     public List<OrderItem>getOrderItems(int orderId){
-        return itemRepo.findByOrderId(orderId);
+        return itemRepo.findByOrderId(orderId)
 
     }
 }
