@@ -9,8 +9,8 @@ public class MenuService {
             MenuItemRep();
 
     public MenuItem getAvailableMenuItem(int id) {
-        MenuItem item = menuRepo.findById(id);
-        System.out.println("Fetched MenuItem: " + item);
+        MenuItem item = menuRepo.findById(id)
+        System.out.println("Fetshed MenuItem: +item");
         if (item == null || !item.isAvailable()) {
             throw new MenuItemNotAvailable("Menu item not available");
         }
