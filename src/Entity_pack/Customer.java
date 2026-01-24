@@ -3,12 +3,10 @@ package Entity_pack;
 public class Customer {
     private int id;
     private String name;
-    private String phone;
 
     public Customer(int id, String name, String phone) {
         this.id = id;
         this.name = name;
-        this.phone = phone;
     }
 
     public int getId() {
@@ -17,7 +15,11 @@ public class Customer {
     public String getName() {
         return name;
     }
-    public String getPhone() {
-        return phone;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }
