@@ -35,12 +35,16 @@ public class OrderService {
 
     }
     public double calculateTotalAmount(int orderId){
-    List<OrderItem>items=itemRepo.findByOrderId(orderId);
-    double total=0;
-    for(OrderItem item:items) {
-        MenuItem menuItem =menuService.getAvailableMenuItem(item.getMenuItemId());
-        total += menuItem.getPrice()*item.getQuantity();
+        List<OrderItem>items=itemRepo.findByOrderId(orderId);
+        double total=0;
+        for(OrderItem item:items) {
+            MenuItem menuItem =menuService.getAvailableMenuItem(item.getMenuItemId());
+            total += menuItem.getPrice()*item.getQuantity();
+        }
+        return total;
     }
-    return total;
+
+    public List<OrderItem> getOrderItems(int orderId) {
+        return itemRepo.findByOrderId(orderId);
     }
 }
