@@ -30,7 +30,6 @@ public class OrderItemRep {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new OrderItem(
-                        rs.getInt("id"),
                         rs.getInt("order_id"),
                         rs.getInt("menu_item_id"),
                         rs.getInt("quantity")
