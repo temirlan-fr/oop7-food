@@ -14,6 +14,6 @@ public class MenuService {
         if (item == null || !item.isAvailable()) {
             throw new MenuItemNotAvailable("Menu item not available");
         }
-        return item
+        return item;
     }
 }
