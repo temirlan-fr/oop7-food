@@ -50,6 +50,6 @@ public class Main {
 
         paymentService.pay(orderService.calculateTotalAmount(orderId));
         orderService.completeOrder(orderId);
-        System.out.println("Order completed successfully")
+        System.out.println("Order completed successfully");
     }
 }
