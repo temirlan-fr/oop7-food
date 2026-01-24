@@ -27,7 +27,7 @@ public class MenuItemRep {
                 MenuItem item = new MenuItem();
                 item.setId(rs.getInt("id"));
                 item.setName(rs.getString("name"));
-                item.setPrice(rs.getDouble("price"));
+                item.setPrice(rs.getDouble("menu_price"));
                 item.setAvailable(rs.getBoolean("available"));
                 return item;
             }
