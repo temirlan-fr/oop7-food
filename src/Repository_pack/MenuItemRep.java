@@ -5,8 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class MenuItemRep {
+public class MenuItemRep implements Repository<MenuItem> {
 
     private final Connection connection;
 
@@ -35,5 +36,15 @@ public class MenuItemRep {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<MenuItem> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public void save(MenuItem entity) {
+
     }
 }

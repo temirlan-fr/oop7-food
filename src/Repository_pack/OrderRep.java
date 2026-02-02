@@ -1,11 +1,14 @@
 package Repository_pack;
 
+import Entity_pack.Order;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class OrderRep {
+public class OrderRep implements Repository<Order> {
 
     private final Connection connection;
 
@@ -43,5 +46,20 @@ public class OrderRep {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public Order findById(int id) {
+        return null;
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public void save(Order entity) {
+
     }
 }
