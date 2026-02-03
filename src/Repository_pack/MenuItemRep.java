@@ -49,7 +49,7 @@ public class MenuItemRep implements Repository<MenuItem> {
                 MenuItem item = new MenuItem(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getDouble("price"),
+                        rs.getDouble("menu_price"),
                         rs.getBoolean("available")
                 );
                 list.add(item);
