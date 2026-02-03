@@ -3,10 +3,14 @@ package Service_pack;
 import Entity_pack.MenuItem;
 import Exception_pack.MenuItemNotAvailable;
 import Repository_pack.MenuItemRep;
+import Repository_pack.Repository;
 
 public class MenuService {
-    private final MenuItemRep menuRepo = new
-            MenuItemRep();
+    private final Repository<MenuItem> menuRepo;
+
+    public MenuService(Repository<MenuItem> menuRepo) {
+        this.menuRepo = menuRepo;
+    }
 
     public MenuItem getAvailableMenuItem(int id) {
         MenuItem item = menuRepo.findById(id);
