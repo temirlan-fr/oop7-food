@@ -7,7 +7,6 @@ public class MenuItem {
     private boolean available;
 
     public MenuItem(){
-
     }
 
     public MenuItem(int id, String name, double price, boolean available) {
@@ -44,12 +43,7 @@ public class MenuItem {
     }
 
     public String toString() {
-        return "MenuItem{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", available=" + available +
-                '}';
+        return "MenuItem{" + "id=" + id + ", name='" + name + '\'' + ", price=" + price + ", available=" + available + '}';
     }
 
 }
