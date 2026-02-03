@@ -6,6 +6,8 @@ import Service_pack.MenuService;
 import Service_pack.OrderService;
 import Service_pack.PaymentService;
 
+import Builder_pack.ComboBuilder;
+import Factory_pack.MenuItemFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,15 +35,37 @@ public class Main {
         System.out.println("ID: " + burger.getId() + " | Name: " + burger.getName() + " | Price: " + burger.getPrice() + " | Available: " + burger.isAvailable());
         System.out.println("ID: " + garnir.getId() + " | Name: " + garnir.getName() + " | Price: " + garnir.getPrice() + " | Available: " + garnir.isAvailable());
         System.out.println("ID: " + cola.getId() + " | Name: " + cola.getName() + " | Price: " + cola.getPrice() + " | Available: " + cola.isAvailable());
-        System.out.println("ID: " + dish.getId() + " | Name: " + dish.getName() + " | Price: " + dish.getPrice() + " | Available: " + dish.isAvailable());
+        System.out.println("ID: " + dish.getId() + " | Name: " + dish.getName() + " | Price: " + dish.getPrice() + " | Available: " + dish.isAvailable() + "\n");
 
-        int customerId = 2;
-        int orderId = orderService.placeOrder(customerId, 1, 2);
-        System.out.println("Created orderId = " + orderId);
+        ComboBuilder combo = new ComboBuilder();
+        combo.addItem(burger).addItem(garnir).addItem(cola);
 
-        System.out.println("\n- Order Receipt -");
+        System.out.println("- Combo Order -");
+        combo.build().forEach(item -> System.out.println(item.getName() + " | Price: " + item.getPrice()));
+        System.out.println("Total Combo Price: " + combo.getTotalPrice() + "\n");
+
+
+        int customerId1 = 1; // Temirlan
+        int orderId1 = orderService.placeOrder(customerId1, 1, 2);
+
+        System.out.println("\n- Order Receipt for Temirlan -");
+        printReceipt(orderId1, customerId1, menuService, orderService);
+        paymentService.pay(orderService.calculateTotalAmount(orderId1));
+        orderService.completeOrder(orderId1);
+
+        int customerId2 = 2;
+        int orderId2 = orderService.placeOrder(customerId2, 2, 1);
+
+        System.out.println("\n- Order Receipt for Ksenia -");
+        printReceipt(orderId2, customerId2, menuService, orderService);
+        paymentService.pay(orderService.calculateTotalAmount(orderId2));
+        orderService.completeOrder(orderId2);
+        System.out.println("\n");
+
+    }
+
+    public static void printReceipt(int orderId, int customerId, MenuService menuService, OrderService orderService) {
         try (Connection con = DatabaseConnection.getConnection()) {
-
             PreparedStatement psCustomer = con.prepareStatement(
                     "SELECT name, phone_number FROM customers WHERE id=?"
             );
@@ -59,23 +83,10 @@ public class Main {
                 total += itemTotal;
                 System.out.println("Ordered: " + menuItem.getName() + " | Quantity: " + item.getQuantity() + " | Price: " + menuItem.getPrice() + " | Subtotal: " + itemTotal);
             }
-
-            System.out.println("\nTotal amount: " + total);
+            System.out.println("\nTotal amount: " + total + "\n");
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-
-        double totalAmount = orderService.calculateTotalAmount(orderId);
-        paymentService.pay(totalAmount);
-
-        orderService.completeOrder(orderId);
-        System.out.println("Order completed successfully");
-
-        System.out.println("\n- Menu sorted by price ascending -");
-        List<MenuItem> sortedMenu = menuService.getSortedMenuByPrice(true);
-        for (MenuItem item : sortedMenu) {
-            System.out.println(item.getName() + " | Price: " + item.getPrice());
         }
     }
 }
