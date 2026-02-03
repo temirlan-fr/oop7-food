@@ -53,16 +53,13 @@ public class OrderItemRep implements Repository<OrderItem> {
 
     @Override
     public void save(OrderItem entity) {
-
     }
 
     @Override
     public void update(OrderItem entity) {
-
     }
 
     @Override
     public void delete(int id) {
-
     }
 }
