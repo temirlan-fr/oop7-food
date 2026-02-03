@@ -61,7 +61,6 @@ public class OrderService {
             MenuItem available = menuService.getAvailableMenuItem(item.getId());
             itemRepo.addItem(orderId, available.getId(), 1);
         }
-
         return orderId;
     }
 
