@@ -1,5 +1,7 @@
 package Service_pack;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import Entity_pack.MenuItem;
 import Exception_pack.MenuItemNotAvailable;
 import Repository_pack.Repository;
@@ -18,5 +20,14 @@ public class MenuService {
             throw new MenuItemNotAvailable("Menu item not available");
         }
         return item;
+    }
+
+    public List<MenuItem> getSortedMenuByPrice(boolean ascending) {
+        List<MenuItem> allItems = menuRepo.findAll();
+        return allItems.stream()
+                .sorted((item1, item2) -> ascending ?
+                        Double.compare(item1.getPrice(), item2.getPrice()) :
+                        Double.compare(item2.getPrice(), item1.getPrice()))
+                .collect(Collectors.toList());
     }
 }
