@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import Factory_pack.MenuItemFactory;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,7 +24,18 @@ public class Main {
         OrderService orderService = new OrderService(new OrderRep(), new OrderItemRep(), menuService);
         PaymentService paymentService = new PaymentService();
 
-        int customerId = 2; // мысалы Ксения
+        MenuItem burger = MenuItemFactory.createMenuItem("Burger", 1, "Chicken Burger", 1500, true);
+        MenuItem garnir = MenuItemFactory.createMenuItem("Garnir", 2, "Fries", 800, true);
+        MenuItem cola = MenuItemFactory.createMenuItem("Drink", 3, "Coca Cola", 500, true);
+        MenuItem dish = MenuItemFactory.createMenuItem("Dish", 4, "Fish", 500, true);
+
+        System.out.println("- Menu -");
+        System.out.println("ID: " + burger.getId() + " | Name: " + burger.getName() + " | Price: " + burger.getPrice() + " | Available: " + burger.isAvailable());
+        System.out.println("ID: " + garnir.getId() + " | Name: " + garnir.getName() + " | Price: " + garnir.getPrice() + " | Available: " + garnir.isAvailable());
+        System.out.println("ID: " + cola.getId() + " | Name: " + cola.getName() + " | Price: " + cola.getPrice() + " | Available: " + cola.isAvailable());
+        System.out.println("ID: " + dish.getId() + " | Name: " + dish.getName() + " | Price: " + dish.getPrice() + " | Available: " + dish.isAvailable());
+
+        int customerId = 2;
         int orderId = orderService.placeOrder(customerId, 1, 2);
         System.out.println("Created orderId = " + orderId);
 
