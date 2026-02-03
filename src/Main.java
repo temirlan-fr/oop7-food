@@ -25,7 +25,7 @@ public class Main {
         PaymentService paymentService = new PaymentService();
 
         MenuItem burger = MenuItemFactory.createMenuItem("Burger", 1, "Chicken_Burger", 1500, true);
-        MenuItem garnir = MenuItemFactory.createMenuItem("Garnir", 2, "Fries", 800, true);
+        MenuItem garnir = MenuItemFactory.createMenuItem("Garner", 2, "Fries", 800, true);
         MenuItem cola = MenuItemFactory.createMenuItem("Drink", 3, "Coca Cola", 500, true);
         MenuItem dish = MenuItemFactory.createMenuItem("Dish", 4, "Fish", 500, true);
 
