@@ -52,4 +52,18 @@ public class OrderService {
     public List<OrderItem> getOrderItems(int orderId) {
         return itemRepo.findByOrderId(orderId);
     }
+
+
+    public int placeComboOrder(int customerId, List<MenuItem> comboItems) {
+
+        int orderId = orderRepo.createOrder(customerId);
+        if (orderId == -1) throw new OrderNotFound("Order creation failed");
+
+        for (MenuItem item : comboItems) {
+            MenuItem availableItem = menuService.getAvailableMenuItem(item.getId());
+            itemRepo.addItem(orderId, availableItem.getId(), 1);
+        }
+        return orderId;
+    }
+
 }
