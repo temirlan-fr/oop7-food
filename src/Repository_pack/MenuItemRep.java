@@ -47,4 +47,14 @@ public class MenuItemRep implements Repository<MenuItem> {
     public void save(MenuItem entity) {
 
     }
+
+    @Override
+    public void update(MenuItem entity) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
+    }
 }

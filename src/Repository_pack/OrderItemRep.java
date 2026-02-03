@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderItemRep {
+public class OrderItemRep implements Repository<OrderItem> {
 
     public void addItem(int orderId, int menuItemId, int quantity) {
         try (Connection con = DatabaseConnection.getConnection()) {
@@ -39,5 +39,30 @@ public class OrderItemRep {
             throw new RuntimeException(e);
         }
         return list;
+    }
+
+    @Override
+    public OrderItem findById(int id) {
+        return null;
+    }
+
+    @Override
+    public List<OrderItem> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public void save(OrderItem entity) {
+
+    }
+
+    @Override
+    public void update(OrderItem entity) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
     }
 }

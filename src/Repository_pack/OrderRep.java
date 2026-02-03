@@ -62,4 +62,14 @@ public class OrderRep implements Repository<Order> {
     public void save(Order entity) {
 
     }
+
+    @Override
+    public void update(Order entity) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
+    }
 }
