@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItemRep implements Repository<MenuItem> {
@@ -40,9 +41,24 @@ public class MenuItemRep implements Repository<MenuItem> {
 
     @Override
     public List<MenuItem> findAll() {
-        return List.of();
+        List<MenuItem> list = new ArrayList<>();
+        String sql = "SELECT * FROM menu_items";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                MenuItem item = new MenuItem(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getBoolean("available")
+                );
+                list.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
-
     @Override
     public void save(MenuItem entity) {
 
