@@ -60,7 +60,6 @@ public class Main {
         printReceipt(comboOrderId, customerId2, menuService, orderService);
         paymentService.pay(orderService.calculateTotalAmount(comboOrderId));
         orderService.completeOrder(comboOrderId);
-
     }
 
     public static void printReceipt(int orderId, int customerId, MenuService menuService, OrderService orderService) {
