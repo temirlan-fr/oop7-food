@@ -60,7 +60,7 @@ public class Main {
         orderService.completeOrder(orderId);
         System.out.println("Order completed successfully");
 
-        System.out.println("\n--- Menu sorted by price ascending ---");
+        System.out.println("\n- Menu sorted by price ascending -");
         List<MenuItem> sortedMenu = menuService.getSortedMenuByPrice(true);
         for (MenuItem item : sortedMenu) {
             System.out.println(item.getName() + " | Price: " + item.getPrice());
