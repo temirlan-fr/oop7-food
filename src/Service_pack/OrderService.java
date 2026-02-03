@@ -55,14 +55,13 @@ public class OrderService {
 
 
     public int placeComboOrder(int customerId, List<MenuItem> comboItems) {
-
         int orderId = orderRepo.createOrder(customerId);
-        if (orderId == -1) throw new OrderNotFound("Order creation failed");
 
         for (MenuItem item : comboItems) {
-            MenuItem availableItem = menuService.getAvailableMenuItem(item.getId());
-            itemRepo.addItem(orderId, availableItem.getId(), 1);
+            MenuItem available = menuService.getAvailableMenuItem(item.getId());
+            itemRepo.addItem(orderId, available.getId(), 1);
         }
+
         return orderId;
     }
 
