@@ -46,4 +46,29 @@ public class MenuItem {
         return "MenuItem{" + "id=" + id + ", name='" + name + '\'' + ", price=" + price + ", available=" + available + '}';
     }
 
+    public static class Builder {
+        private int id;
+        private String name;
+        private double price;
+        private boolean available;
+
+        public Builder setId(int id) {
+            this.id = id; return this;
+        }
+        public Builder setName(String name) {
+            this.name = name; return this;
+        }
+        public Builder setPrice(double price) {
+            this.price = price; return this;
+        }
+        public Builder setAvailable(boolean available) {
+            this.available = available; return this;
+        }
+
+        public MenuItem build() {
+            return new MenuItem(id, name, price, available);
+        }
+    }
+
+
 }
