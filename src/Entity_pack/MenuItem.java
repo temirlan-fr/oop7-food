@@ -6,8 +6,7 @@ public class MenuItem {
     private double price;
     private boolean available;
 
-    public MenuItem(){
-    }
+    public MenuItem() {}
 
     public MenuItem(int id, String name, double price, boolean available) {
         this.id = id;
@@ -42,10 +41,6 @@ public class MenuItem {
         this.available = available;
     }
 
-    public String toString() {
-        return "MenuItem{" + "id=" + id + ", name='" + name + '\'' + ", price=" + price + ", available=" + available + '}';
-    }
-
     public static class Builder {
         private int id;
         private String name;
@@ -69,6 +64,4 @@ public class MenuItem {
             return new MenuItem(id, name, price, available);
         }
     }
-
-
 }

@@ -15,8 +15,4 @@ public class ComboBuilder {
     public List<MenuItem> build() {
         return items;
     }
-
-    public double getTotalPrice() {
-        return items.stream().mapToDouble(MenuItem::getPrice).sum();
-    }
 }

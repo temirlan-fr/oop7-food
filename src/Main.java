@@ -1,89 +1,99 @@
 import Entity_pack.MenuItem;
-import Entity_pack.Order;
 import Entity_pack.OrderItem;
 import Repository_pack.*;
 import Service_pack.MenuService;
 import Service_pack.OrderService;
 import Service_pack.PaymentService;
-
-import Builder_pack.ComboBuilder;
 import Factory_pack.MenuItemFactory;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
         Repository<MenuItem> menuRepo = new MenuItemRep();
-        Repository<Order> orderRepo = new OrderRep();
-        Repository<OrderItem> itemRepo = new OrderItemRep();
-
-        MenuService menuService = new MenuService(new MenuItemRep());
+        MenuService menuService = new MenuService(menuRepo);
         OrderService orderService = new OrderService(new OrderRep(), new OrderItemRep(), menuService);
         PaymentService paymentService = new PaymentService();
 
-        MenuItem burger = MenuItemFactory.createMenuItem("Burger", 1, "Chicken_Burger", 1500, true);
-        MenuItem garnir = MenuItemFactory.createMenuItem("Garnir", 2, "Fries", 800, true);
-        MenuItem cola = MenuItemFactory.createMenuItem("Drink", 4, "Cola", 500, true);
-        MenuItem dish = MenuItemFactory.createMenuItem("Dish", 6, "Fish", 500, true);
+        MenuItem burger = MenuItemFactory.createMenuItem("burger", 1, "Chicken_Burger", 1500, true);
+        MenuItem garnir = MenuItemFactory.createMenuItem("garnir", 2, "Fries", 800, true);
+        MenuItem cola = MenuItemFactory.createMenuItem("drink", 4, "Cola", 500, true);
+        MenuItem dish = MenuItemFactory.createMenuItem("dish", 6, "Fish", 2500, true);
 
-        System.out.println("- Menu -");
-        System.out.println("ID: " + burger.getId() + " | Name: " + burger.getName() + " | Price: " + burger.getPrice() + " | Available: " + burger.isAvailable());
-        System.out.println("ID: " + garnir.getId() + " | Name: " + garnir.getName() + " | Price: " + garnir.getPrice() + " | Available: " + garnir.isAvailable());
-        System.out.println("ID: " + cola.getId() + " | Name: " + cola.getName() + " | Price: " + cola.getPrice() + " | Available: " + cola.isAvailable());
-        System.out.println("ID: " + dish.getId() + " | Name: " + dish.getName() + " | Price: " + dish.getPrice() + " | Available: " + dish.isAvailable() + "\n");
+        List<MenuItem> comboMenu = MenuItemFactory.createComboItems(burger, garnir, cola);
 
-        ComboBuilder combo = new ComboBuilder();
-        combo.addItem(burger).addItem(garnir).addItem(cola);
-
-        System.out.println("- Combo Order -");
-        combo.build().forEach(item -> System.out.println(item.getName() + " | Price: " + item.getPrice()));
-        System.out.println("Total Combo Price: " + combo.getTotalPrice() + "\n");
+        List<MenuItem> sortedMenu = menuService.getSortedMenuByPrice(true);
+        System.out.println("--- Menu ---");
+        for(MenuItem item : sortedMenu){
+            System.out.println(item.getId() + " | " + item.getName() + " | " + item.getPrice());
+        }
 
 
-        int customerId1 = 1; // Temirlan
-        int orderId1 = orderService.placeOrder(customerId1, 1, 2);
+        int comboId = 100;
+        double comboPrice = comboMenu.stream().mapToDouble(MenuItem::getPrice).sum();
+        System.out.println("\n--- Combo Menu ---");
+        System.out.println(comboId + " | Burger + Fries + Cola Combo | " + comboPrice);
 
-        System.out.println("\n- Order Receipt for Temirlan -");
-        printReceipt(orderId1, customerId1, menuService, orderService);
-        paymentService.pay(orderService.calculateTotalAmount(orderId1));
-        orderService.completeOrder(orderId1);
+        Scanner scanner = new Scanner(System.in);
 
-        int customerId2 = 2;
-        int comboOrderId = orderService.placeComboOrder(customerId2, combo.build());
 
-        System.out.println("\n- Combo Order Receipt -");
-        printReceipt(comboOrderId, customerId2, menuService, orderService);
-        paymentService.pay(orderService.calculateTotalAmount(comboOrderId));
-        orderService.completeOrder(comboOrderId);
+        Map<Integer, String[]> customers = new LinkedHashMap<>();
+        customers.put(1, new String[]{"Temirlan","87473436246"});
+        customers.put(2, new String[]{"Xeniya","87271248719"});
+        customers.put(3, new String[]{"Nurbolsyn","87773287427"});
+        customers.put(4, new String[]{"Alpamys","87073646241"});
+        customers.put(5, new String[]{"Shyngys","87005556677"});
+
+
+        System.out.println("\nChoose customer ID:");
+        for(Map.Entry<Integer, String[]> entry : customers.entrySet()){
+            System.out.println(entry.getKey() + " | " + entry.getValue()[0] + " | " + entry.getValue()[1]);
+        }
+
+        int customerId = scanner.nextInt();
+        String customerName = customers.get(customerId)[0];
+        String customerPhone = customers.get(customerId)[1];
+
+
+        System.out.println("\nOrder combo or individual? (c/i)");
+        String choice = scanner.next();
+
+        int orderId = -1;
+
+        if(choice.equalsIgnoreCase("c")) {
+            orderId = orderService.placeComboOrder(customerId, comboMenu);
+        } else {
+            System.out.println("Number of items to order:");
+            int n = scanner.nextInt();
+
+            orderId = orderService.createEmptyOrder(customerId);
+            for(int i=0;i<n;i++){
+                System.out.println("Enter MenuItem ID:");
+                int id = scanner.nextInt();
+                System.out.println("Enter quantity:");
+                int qty = scanner.nextInt();
+                orderService.placeOrder(customerId, id, qty, orderId);
+            }
+        }
+
+
+        printReceipt(orderId, customerId, customerName, customerPhone, menuService, orderService);
+        double total = orderService.calculateTotalAmount(orderId);
+        paymentService.pay(total);
+        orderService.completeOrder(orderId);
     }
 
-    public static void printReceipt(int orderId, int customerId, MenuService menuService, OrderService orderService) {
-        try (Connection con = DatabaseConnection.getConnection()) {
-            PreparedStatement psCustomer = con.prepareStatement(
-                    "SELECT name, phone_number FROM customers WHERE id=?"
-            );
-            psCustomer.setInt(1, customerId);
-            ResultSet rsCustomer = psCustomer.executeQuery();
-            if (rsCustomer.next()) {
-                System.out.println("Customer: " + rsCustomer.getString("name") + " | Phone: " + rsCustomer.getString("phone_number"));
-            }
-
-            List<OrderItem> items = orderService.getOrderItems(orderId);
-            double total = 0;
-            for (OrderItem item : items) {
-                MenuItem menuItem = menuService.getAvailableMenuItem(item.getMenuItemId());
-                double itemTotal = menuItem.getPrice() * item.getQuantity();
-                total += itemTotal;
-                System.out.println("Ordered: " + menuItem.getName() + " | Quantity: " + item.getQuantity() + " | Price: " + menuItem.getPrice() + " | Subtotal: " + itemTotal);
-            }
-            System.out.println("\nTotal amount: " + total + "\n");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public static void printReceipt(int orderId, int customerId, String name, String phone, MenuService menuService, OrderService orderService){
+        System.out.println("\nCustomer: " + name + " | Phone: " + phone);
+        List<OrderItem> items = orderService.getOrderItems(orderId);
+        double total = 0;
+        for(OrderItem item : items){
+            MenuItem menuItem = menuService.getAvailableMenuItem(item.getMenuItemId());
+            double sub = menuItem.getPrice() * item.getQuantity();
+            total += sub;
+            System.out.println("Ordered: " + menuItem.getName() + " | Quantity: " + item.getQuantity() + " | Price: " + menuItem.getPrice() + " | Subtotal: " + sub);
         }
+        System.out.println("Total: " + total + "\n");
     }
 }
